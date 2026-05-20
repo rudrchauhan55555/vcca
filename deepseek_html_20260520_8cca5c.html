@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>V.C.C - Vishu Civil Contractor | Best Construction Services in Bihar</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="V.C.C - Vishu Civil Contractor - Best construction services in Bagaha, West Champaran, Bihar. 15+ years experience, 500+ projects. House construction, commercial buildings, renovation.">
+    <meta name="keywords" content="VCC, Vishu Civil Contractor, civil contractor bagaha, construction company west champaran, house construction bihar, building contractor, Narkatiaganj, Raxaul, Lauria, Bettiah">
+    <meta name="author" content="Vishu Civil Contractor">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="V.C.C - Vishu Civil Contractor">
+    <meta property="og:description" content="Best Construction Services in Bihar">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png">
+    <link rel="apple-touch-icon" href="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Swiper for Reviews -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, orderBy, query, limit, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbZj9-w4FwD4NS_KsAjQvW6rInLrZXl68",
+            authDomain: "vishu-fad04.firebaseapp.com",
+            projectId: "vishu-fad04",
+            storageBucket: "vishu-fad04.firebasestorage.app",
+            messagingSenderId: "166566628152",
+            appId: "1:166566628152:web:2655ea2232bcd916fd0fcd"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        
+        window.db = db;
+        window.storage = storage;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.getDoc = getDoc;
+        window.updateDoc = updateDoc;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.orderBy = orderBy;
+        window.query = query;
+        window.limit = limit;
+        window.where = where;
+        window.ref = ref;
+        window.uploadBytes = uploadBytes;
+        window.getDownloadURL = getDownloadURL;
+        window.deleteObject = deleteObject;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%); color: #fff; overflow-x: hidden; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #1a1a3a; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #ffd700, #ff8c00); border-radius: 10px; }
+        
+        /* Floating Buttons */
+        .floating-buttons { position: fixed; bottom: 30px; right: 30px; z-index: 999; display: flex; flex-direction: column; gap: 15px; }
+        .floating-btn { width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 26px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transition: all 0.3s ease; animation: pulse 2s infinite; text-decoration: none; }
+        .floating-btn.whatsapp { background: #25D366; }
+        .floating-btn.call { background: #007bff; }
+        .floating-btn:hover { transform: scale(1.1); }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
+        
+        /* Navigation */
+        .navbar { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); padding: 0.8rem 5%; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo { display: flex; align-items: center; gap: 12px; background: none; border: none; cursor: pointer; }
+        .logo img { width: 55px; height: 55px; border-radius: 50%; transition: transform 0.5s ease; animation: logoGlow 2s ease-in-out infinite; }
+        .logo img:hover { transform: rotate(360deg) scale(1.05); }
+        @keyframes logoGlow { 0% { filter: drop-shadow(0 0 2px #ffd700); } 50% { filter: drop-shadow(0 0 10px #ff8c00); } 100% { filter: drop-shadow(0 0 2px #ffd700); } }
+        .logo span { color: white; font-size: 1.6rem; font-weight: 800; letter-spacing: 2px; }
+        .logo span:first-child { color: #ffd700; }
+        .nav-menu { display: flex; list-style: none; gap: 1rem; }
+        .nav-menu li button { color: white; font-weight: 500; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; font-size: 0.95rem; font-family: 'Poppins', sans-serif; padding: 8px 18px; border-radius: 30px; }
+        .nav-menu li button:hover, .nav-menu li button.active { background: rgba(255,215,0,0.2); color: #ffd700; transform: translateY(-2px); }
+        .hamburger { display: none; cursor: pointer; color: white; font-size: 1.5rem; background: none; border: none; }
+        
+        /* Page Container */
+        .page-container { margin-top: 80px; min-height: calc(100vh - 80px); }
+        .page { display: none; animation: fadeIn 0.6s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, #1a1a3a 0%, #0f0c29 100%); min-height: 85vh; display: flex; align-items: center; padding: 0 5%; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%); animation: rotate 20s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .hero-content { max-width: 700px; color: white; position: relative; z-index: 1; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; line-height: 1.2; }
+        .hero h1 .highlight { color: #ffd700; text-shadow: 0 0 20px rgba(255,215,0,0.5); }
+        .hero p { font-size: 1.1rem; margin-bottom: 30px; opacity: 0.95; }
+        .hero-buttons { display: flex; gap: 20px; flex-wrap: wrap; }
+        
+        /* Buttons */
+        .btn { padding: 12px 30px; border-radius: 50px; font-weight: 600; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 0.95rem; }
+        .btn-primary { background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; box-shadow: 0 4px 15px rgba(255,140,0,0.4); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255,140,0,0.6); }
+        .btn-outline { border: 2px solid #ffd700; color: #ffd700; background: transparent; }
+        .btn-outline:hover { background: #ffd700; color: #1a1a2e; transform: translateY(-3px); }
+        
+        /* Cards - Dark Theme */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 60px 5%; background: linear-gradient(135deg, #0f0c29, #1a1a3a); }
+        .service-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 35px 25px; text-align: center; transition: all 0.4s ease; border: 1px solid rgba(255,215,0,0.2); }
+        .service-card:hover { transform: translateY(-12px); background: rgba(255,255,255,0.12); border-color: #ffd700; }
+        .service-icon { width: 75px; height: 75px; background: linear-gradient(135deg, #ff8c00, #ffd700); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #1a1a2e; font-size: 30px; transition: all 0.3s ease; }
+        .service-card:hover .service-icon { transform: scale(1.1) rotate(360deg); }
+        .service-card h3 { color: #ffd700; margin-bottom: 15px; }
+        .service-card p { color: #ccc; }
+        
+        /* Blog Section - Recent Blogs Home Page */
+        .recent-blogs { padding: 60px 5%; background: linear-gradient(135deg, #1a1a3a, #0f0c29); }
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.5rem; color: #ffd700; position: relative; display: inline-block; }
+        .section-title h2::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: linear-gradient(135deg, #ff8c00, #ffd700); border-radius: 2px; }
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+        .blog-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; transition: all 0.4s ease; border: 1px solid rgba(255,215,0,0.2); }
+        .blog-card:hover { transform: translateY(-8px); border-color: #ffd700; }
+        .blog-image { height: 220px; overflow: hidden; position: relative; }
+        .blog-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .blog-card:hover .blog-image img { transform: scale(1.08); }
+        .blog-category { position: absolute; top: 12px; right: 12px; background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; padding: 4px 12px; border-radius: 25px; font-size: 0.75rem; font-weight: 600; }
+        .blog-content { padding: 20px; }
+        .blog-meta { display: flex; gap: 15px; margin-bottom: 12px; color: #aaa; font-size: 0.8rem; }
+        .blog-content h3 { color: #ffd700; margin-bottom: 10px; }
+        .blog-content p { color: #ccc; line-height: 1.5; }
+        .read-more-btn { background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; border: none; padding: 8px 20px; border-radius: 25px; font-weight: 600; cursor: pointer; margin-top: 15px; transition: all 0.3s ease; }
+        .read-more-btn:hover { transform: translateX(5px); }
+        
+        /* Reviews Slider */
+        .reviews-slider { padding: 60px 5%; background: linear-gradient(135deg, #0f0c29, #1a1a3a); }
+        .swiper { padding: 20px 0; }
+        .review-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 20px; padding: 25px; text-align: center; border: 1px solid rgba(255,215,0,0.2); }
+        .review-stars { color: #ffd700; margin: 10px 0; }
+        .review-text { color: #ccc; font-style: italic; margin: 15px 0; }
+        .reviewer-name { color: #ffd700; font-weight: 600; }
+        
+        /* CTA Section */
+        .cta-section { background: linear-gradient(135deg, #ff8c00, #ffd700); padding: 60px 5%; text-align: center; color: #1a1a2e; }
+        .cta-section h2 { font-size: 2rem; margin-bottom: 15px; }
+        .cta-buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 25px; }
+        .cta-btn { background: #1a1a2e; color: #ffd700; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; }
+        .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        
+        /* Footer */
+        .footer { background: linear-gradient(135deg, #0a0a2a, #0f0c29); color: white; padding: 50px 5% 25px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 35px; max-width: 1400px; margin: 0 auto; }
+        .footer-section h3 { color: #ffd700; margin-bottom: 20px; position: relative; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li button { background: none; border: none; color: #ccc; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 5px 0; font-family: 'Poppins', sans-serif; }
+        .footer-section ul li button:hover { color: #ffd700; transform: translateX(5px); }
+        .social-links { display: flex; gap: 12px; margin-top: 15px; }
+        .social-links a { width: 35px; height: 35px; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; }
+        .social-links a:hover { background: #ffd700; color: #1a1a2e; transform: translateY(-3px); }
+        .footer-bottom { text-align: center; padding-top: 30px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Admin Panel */
+        .admin-toggle { position: fixed; bottom: 120px; right: 30px; z-index: 999; background: linear-gradient(135deg, #1a1a2e, #24243e); color: #ffd700; width: 55px; height: 55px; border-radius: 50%; display: none; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #ffd700; }
+        .admin-toggle.show { display: flex; }
+        .admin-panel { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 2000; overflow-y: auto; }
+        .admin-panel.show { display: block; }
+        .admin-container { max-width: 800px; margin: 50px auto; background: #1a1a2e; padding: 30px; border-radius: 20px; border: 1px solid #ffd700; }
+        .admin-tabs { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+        .admin-tab { background: rgba(255,255,255,0.1); border: none; padding: 10px 20px; border-radius: 25px; color: white; cursor: pointer; }
+        .admin-tab.active { background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; }
+        .admin-content { display: none; }
+        .admin-content.active { display: block; }
+        .admin-form input, .admin-form textarea, .admin-form select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #ffd700; background: #0f0c29; color: white; }
+        .admin-btn { background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; padding: 12px; border: none; border-radius: 25px; font-weight: 600; cursor: pointer; width: 100%; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat-box { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-box h3 { color: #ffd700; font-size: 1.5rem; }
+        .admin-list { max-height: 300px; overflow-y: auto; }
+        .admin-list-item { background: rgba(255,255,255,0.05); padding: 15px; margin: 10px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .delete-btn { background: #ff4444; color: white; border: none; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-menu { position: fixed; left: -100%; top: 75px; flex-direction: column; background: linear-gradient(135deg, #0f0c29, #302b63); width: 100%; text-align: center; transition: 0.3s; padding: 1.5rem 0; gap: 1rem; }
+            .nav-menu.active { left: 0; }
+            .hero h1 { font-size: 1.8rem; }
+            .hero-buttons { flex-direction: column; }
+            .logo span { font-size: 1.2rem; }
+            .logo img { width: 45px; height: 45px; }
+            .blog-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Blog Detail Page */
+        .blog-detail { padding: 60px 5%; max-width: 900px; margin: 0 auto; }
+        .blog-detail img { width: 100%; border-radius: 20px; margin: 20px 0; }
+        .blog-detail h1 { color: #ffd700; margin: 20px 0; }
+        .blog-detail .blog-meta { margin-bottom: 20px; }
+        .blog-detail .blog-content { color: #ddd; line-height: 1.8; }
+        .back-btn { background: linear-gradient(135deg, #ff8c00, #ffd700); border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <!-- Floating Buttons -->
+    <div class="floating-buttons">
+        <a href="https://wa.me/917700836128" class="floating-btn whatsapp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        <a href="tel:+917700836128" class="floating-btn call"><i class="fas fa-phone-alt"></i></a>
+    </div>
+
+    <!-- Admin Toggle -->
+    <button class="admin-toggle" id="adminToggle" onclick="toggleAdminPanel()"><i class="fas fa-user-shield"></i></button>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel">
+        <div class="admin-container">
+            <button onclick="toggleAdminPanel()" style="position:absolute; top:15px; right:20px; background:none; border:none; font-size:1.5rem; color:#ffd700; cursor:pointer;">✕</button>
+            <h2 style="color:#ffd700; margin-bottom:20px;"><i class="fas fa-cog"></i> Admin Dashboard</h2>
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="showAdminTab('blog')">📝 Blog</button>
+                <button class="admin-tab" onclick="showAdminTab('reviews')">⭐ Reviews</button>
+                <button class="admin-tab" onclick="showAdminTab('stats')">📊 Analytics</button>
+            </div>
+            
+            <!-- Blog Management -->
+            <div id="admin-blog" class="admin-content active">
+                <h3 style="color:#ffd700;">Write New Blog</h3>
+                <form id="adminBlogForm" class="admin-form">
+                    <input type="text" id="blogTitle" placeholder="Blog Title" required>
+                    <input type="text" id="blogAuthor" placeholder="Author Name" value="Vishu Civil" required>
+                    <select id="blogCategory">
+                        <option value="Construction">Construction Tips</option>
+                        <option value="Design">Design Ideas</option>
+                        <option value="Materials">Material Guide</option>
+                    </select>
+                    <input type="file" id="blogImageFile" accept="image/*">
+                    <textarea id="blogContent" rows="6" placeholder="Blog Content" required></textarea>
+                    <button type="submit" class="admin-btn">Publish Blog</button>
+                </form>
+                <hr style="margin: 20px 0; border-color: #ffd700;">
+                <h3 style="color:#ffd700;">Manage Blogs</h3>
+                <div id="adminBlogList" class="admin-list"></div>
+            </div>
+            
+            <!-- Reviews Management -->
+            <div id="admin-reviews" class="admin-content">
+                <h3 style="color:#ffd700;">Manage Reviews</h3>
+                <div id="adminReviewList" class="admin-list"></div>
+            </div>
+            
+            <!-- Analytics -->
+            <div id="admin-stats" class="admin-content">
+                <h3 style="color:#ffd700;">Website Analytics</h3>
+                <div class="stats-grid">
+                    <div class="stat-box"><h3 id="totalVisits">0</h3><p>Total Visits</p></div>
+                    <div class="stat-box"><h3 id="todayVisits">0</h3><p>Today's Visits</p></div>
+                    <div class="stat-box"><h3 id="totalBlogs">0</h3><p>Total Blogs</p></div>
+                    <div class="stat-box"><h3 id="totalReviews">0</h3><p>Total Reviews</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <button class="logo" onclick="showPage('home')">
+                <img src="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png" alt="VCC Logo">
+                <span>V.C.C</span>
+            </button>
+            <button class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+            <ul class="nav-menu" id="navMenu">
+                <li><button onclick="showPage('home')" id="nav-home"><i class="fas fa-home"></i> Home</button></li>
+                <li><button onclick="showPage('services')" id="nav-services"><i class="fas fa-tools"></i> Services</button></li>
+                <li><button onclick="showPage('blog')" id="nav-blog"><i class="fas fa-blog"></i> Blog</button></li>
+                <li><button onclick="showPage('contact')" id="nav-contact"><i class="fas fa-envelope"></i> Contact</button></li>
+                <li><button onclick="showPage('areas')" id="nav-areas"><i class="fas fa-map-marker-alt"></i> Areas</button></li>
+                <li><button onclick="showPage('help')" id="nav-help"><i class="fas fa-question-circle"></i> Help</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <div class="hero-content" data-aos="fade-up">
+                    <h1><span class="highlight">V.C.C</span><br>Vishu Civil Contractor</h1>
+                    <p>Your Trusted Construction Partner | 15+ Years Experience | 500+ Happy Clients</p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-primary" onclick="showPage('contact')"><i class="fas fa-calendar-check"></i> Free Consultation</button>
+                        <button class="btn btn-outline" onclick="showPage('services')"><i class="fas fa-eye"></i> Our Services</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <div class="services-grid">
+                <div class="service-card" data-aos="flip-left"><div class="service-icon"><i class="fas fa-home"></i></div><h3>Residential Construction</h3><p>Modern homes, villas, and apartments with premium quality</p><button class="read-more-btn" onclick="showPage('services')">और जानें ➡️</button></div>
+                <div class="service-card" data-aos="flip-left" data-aos-delay="100"><div class="service-icon"><i class="fas fa-building"></i></div><h3>Commercial Construction</h3><p>Offices, malls, factories, and commercial complexes</p><button class="read-more-btn" onclick="showPage('services')">और जानें ➡️</button></div>
+                <div class="service-card" data-aos="flip-left" data-aos-delay="200"><div class="service-icon"><i class="fas fa-paint-roller"></i></div><h3>Renovation</h3><p>Give new life to your old buildings</p><button class="read-more-btn" onclick="showPage('services')">और जानें ➡️</button></div>
+            </div>
+
+            <!-- Recent Blogs Section -->
+            <div class="recent-blogs">
+                <div class="section-title" data-aos="fade-up"><h2>📝 Recent Blogs</h2></div>
+                <div class="blog-grid" id="recentBlogs"></div>
+            </div>
+
+            <!-- Reviews Slider -->
+            <div class="reviews-slider">
+                <div class="section-title" data-aos="fade-up"><h2>⭐ Customer Reviews</h2></div>
+                <div class="swiper reviewsSwiper">
+                    <div class="swiper-wrapper" id="reviewsSlider"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="cta-section">
+                <h2>अपने प्रोजेक्ट की शुरुआत आज ही करें</h2>
+                <p>मुफ्त परामर्श और अनुमान के लिए अभी संपर्क करें</p>
+                <div class="cta-buttons">
+                    <button class="cta-btn" onclick="showPage('contact')"><i class="fas fa-calendar-check"></i> मुफ्त परामर्श</button>
+                    <a href="tel:+917700836128" class="cta-btn"><i class="fas fa-phone-alt"></i> कॉल करें</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SERVICES PAGE -->
+        <div id="services" class="page">
+            <section class="hero" style="min-height: 40vh;"><div class="hero-content"><h1>Our Services</h1><p>Quality construction services with trust and excellence</p></div></section>
+            <div class="services-grid">
+                <div class="service-card"><div class="service-icon"><i class="fas fa-home"></i></div><h3>Residential Construction</h3><p>Complete house construction from foundation to finishing</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Residential%20Construction', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-building"></i></div><h3>Commercial Construction</h3><p>Office spaces, malls, and commercial buildings</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Commercial%20Construction', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-paint-roller"></i></div><h3>Renovation</h3><p>Modern renovation of old buildings</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Renovation', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-tint"></i></div><h3>Plumbing</h3><p>Modern plumbing and water supply systems</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Plumbing', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-bolt"></i></div><h3>Electrical</h3><p>Wiring, lighting, and electrical systems</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Electrical', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-th-large"></i></div><h3>Flooring & Tiling</h3><p>Quality tiles, marble, and wooden flooring</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20Flooring', '_blank')">Book Now →</button></div>
+            </div>
+        </div>
+
+        <!-- BLOG LIST PAGE -->
+        <div id="blog" class="page">
+            <section class="hero" style="min-height: 40vh;"><div class="hero-content"><h1>Our Blog</h1><p>Latest updates and construction tips</p></div></section>
+            <div class="recent-blogs"><div class="blog-grid" id="allBlogs"></div></div>
+        </div>
+
+        <!-- BLOG DETAIL PAGE (Dynamic) -->
+        <div id="blog-detail" class="page">
+            <div class="blog-detail" id="blogDetailContent"></div>
+        </div>
+
+        <!-- CONTACT PAGE -->
+        <div id="contact" class="page">
+            <section class="hero" style="min-height: 40vh;"><div class="hero-content"><h1>Contact Us</h1><p>Get in touch with us for free consultation</p></div></section>
+            <div class="services-grid">
+                <div class="service-card"><i class="fas fa-map-marker-alt" style="font-size:2rem; color:#ffd700;"></i><h3>Address</h3><p>Bagaha, West Champaran, Bihar - 845101</p></div>
+                <div class="service-card"><i class="fas fa-phone" style="font-size:2rem; color:#ffd700;"></i><h3>Phone</h3><p><a href="tel:+917700836128" style="color:white;">+91 77008 36128</a></p></div>
+                <div class="service-card"><i class="fas fa-envelope" style="font-size:2rem; color:#ffd700;"></i><h3>Email</h3><p>info@vishucivil.com</p></div>
+                <div class="service-card"><i class="fas fa-clock" style="font-size:2rem; color:#ffd700;"></i><h3>Hours</h3><p>Mon-Sat: 9AM - 7PM</p></div>
+            </div>
+        </div>
+
+        <!-- AREAS PAGE - Updated with all West Champaran areas -->
+        <div id="areas" class="page">
+            <section class="hero" style="min-height: 40vh;"><div class="hero-content"><h1>Service Areas</h1><p>We provide services in these areas of West Champaran</p></div></section>
+            <div class="services-grid">
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Bagaha</h3><p>Head office location</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Bagaha', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Narkatiaganj</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Narkatiaganj', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Raxaul</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Raxaul', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Lauria</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Lauria', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Bettiah</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Bettiah', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Motihari</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Motihari', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Gopalganj</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Gopalganj', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Siwan</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Siwan', '_blank')">Book Now →</button></div>
+                <div class="service-card"><div class="service-icon"><i class="fas fa-city"></i></div><h3>Chapra</h3><p>Full services available</p><button class="read-more-btn" onclick="window.open('https://wa.me/917700836128?text=I%20need%20service%20in%20Chapra', '_blank')">Book Now →</button></div>
+            </div>
+            <div style="text-align: center; padding: 20px; color: #ccc;">
+                <p><i class="fas fa-map-marker-alt" style="color:#ffd700;"></i> <strong>Pashchim Champaran (West Champaran)</strong> - Complete district coverage</p>
+                <p style="font-size: 0.9rem; margin-top: 10px;">* हम पश्चिम चम्पारण जिले के सभी क्षेत्रों में सेवाएं प्रदान करते हैं। किसी भी अन्य क्षेत्र के लिए कृपया कॉल करें।</p>
+            </div>
+        </div>
+
+        <!-- HELP PAGE -->
+        <div id="help" class="page">
+            <section class="hero" style="min-height: 40vh;"><div class="hero-content"><h1>Help Center</h1><p>Frequently asked questions</p></div></section>
+            <div class="services-grid">
+                <div class="service-card"><h3>How old is your company?</h3><p>15+ years with 500+ successful projects</p></div>
+                <div class="service-card"><h3>Free estimate?</h3><p>Yes, free consultation for all projects</p></div>
+                <div class="service-card"><h3>Warranty?</h3><p>1 year warranty on all work</p></div>
+                <div class="service-card"><h3>Payment terms?</h3><p>30% advance, 40% on 50% completion, 30% on completion</p></div>
+                <div class="service-card"><h3>Service areas covered?</h3><p>Entire West Champaran district including Bagaha, Narkatiaganj, Raxaul, Lauria, Bettiah, and more</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section"><h3>V.C.C</h3><p>Quality construction services with trust and excellence. 15+ years experience.</p><div class="social-links"><a href="#"><i class="fab fa-facebook-f"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-instagram"></i></a></div></div>
+            <div class="footer-section"><h3>Quick Links</h3><ul><li><button onclick="showPage('home')">Home</button></li><li><button onclick="showPage('services')">Services</button></li><li><button onclick="showPage('blog')">Blog</button></li><li><button onclick="showPage('contact')">Contact</button></li><li><button onclick="showPage('areas')">Service Areas</button></li></ul></div>
+            <div class="footer-section"><h3>Contact</h3><ul><li><i class="fas fa-map-marker-alt"></i> Bagaha, West Champaran, Bihar</li><li><i class="fas fa-phone"></i> +91 77008 36128</li><li><i class="fas fa-envelope"></i> info@vishucivil.com</li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 V.C.C - Vishu Civil Contractor. All Rights Reserved. | Serving West Champaran Since 2010</p></div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script type="module">
+        AOS.init({ duration: 1000, once: true, offset: 100 });
+        
+        let blogs = [];
+        let reviews = [];
+        let visitCount = parseInt(localStorage.getItem('totalVisits') || '0');
+        
+        // Update visit count
+        const today = new Date().toDateString();
+        const lastVisit = localStorage.getItem('lastVisit');
+        if (lastVisit !== today) {
+            visitCount++;
+            localStorage.setItem('totalVisits', visitCount);
+            localStorage.setItem('lastVisit', today);
+        }
+        
+        // Cloudinary upload
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'ml_default');
+            try {
+                const res = await fetch('https://api.cloudinary.com/v1_1/digyet8lg/image/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                return data.secure_url;
+            } catch(e) { console.error('Upload error:', e); return null; }
+        }
+        
+        // Load blogs from Firebase
+        async function loadBlogs() {
+            try {
+                const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+                const snap = await getDocs(q);
+                blogs = [];
+                snap.forEach(doc => blogs.push({ id: doc.id, ...doc.data() }));
+                displayRecentBlogs();
+                displayAllBlogs();
+                document.getElementById('totalBlogs').innerText = blogs.length;
+            } catch(e) { console.error(e); }
+        }
+        
+        function displayRecentBlogs() {
+            const container = document.getElementById('recentBlogs');
+            if (!container) return;
+            const recent = blogs.slice(0, 3);
+            container.innerHTML = recent.map(blog => `
+                <div class="blog-card"><div class="blog-image"><img src="${blog.imageUrl || 'https://images.unsplash.com/photo-1581094794329-8114a89e3f43?w=500'}" alt="${blog.title}"><span class="blog-category">${blog.category}</span></div><div class="blog-content"><div class="blog-meta"><span><i class="fas fa-user"></i> ${blog.author}</span><span><i class="fas fa-calendar"></i> ${new Date(blog.timestamp?.toDate()).toLocaleDateString() || 'Recent'}</span></div><h3>${blog.title}</h3><p>${blog.content?.substring(0, 100)}...</p><button class="read-more-btn" onclick="viewBlog('${blog.id}')">Read More →</button></div></div>
+            `).join('');
+        }
+        
+        function displayAllBlogs() {
+            const container = document.getElementById('allBlogs');
+            if (!container) return;
+            container.innerHTML = blogs.map(blog => `
+                <div class="blog-card"><div class="blog-image"><img src="${blog.imageUrl || 'https://images.unsplash.com/photo-1581094794329-8114a89e3f43?w=500'}" alt="${blog.title}"><span class="blog-category">${blog.category}</span></div><div class="blog-content"><div class="blog-meta"><span><i class="fas fa-user"></i> ${blog.author}</span><span><i class="fas fa-calendar"></i> ${new Date(blog.timestamp?.toDate()).toLocaleDateString() || 'Recent'}</span></div><h3>${blog.title}</h3><p>${blog.content?.substring(0, 100)}...</p><button class="read-more-btn" onclick="viewBlog('${blog.id}')">Read More →</button></div></div>
+            `).join('');
+        }
+        
+        window.viewBlog = async function(blogId) {
+            const blog = blogs.find(b => b.id === blogId);
+            if (blog) {
+                document.getElementById('blogDetailContent').innerHTML = `
+                    <button class="back-btn" onclick="showPage('blog')"><i class="fas fa-arrow-left"></i> Back to Blogs</button>
+                    <h1>${blog.title}</h1>
+                    <div class="blog-meta"><span><i class="fas fa-user"></i> ${blog.author}</span><span><i class="fas fa-calendar"></i> ${new Date(blog.timestamp?.toDate()).toLocaleDateString()}</span><span><i class="fas fa-tag"></i> ${blog.category}</span></div>
+                    <img src="${blog.imageUrl || 'https://images.unsplash.com/photo-1581094794329-8114a89e3f43?w=800'}" alt="${blog.title}">
+                    <div class="blog-content"><p>${blog.content?.replace(/\n/g, '<br>')}</p></div>
+                `;
+                showPage('blog-detail');
+            }
+        };
+        
+        // Load reviews from Firebase
+        async function loadReviews() {
+            try {
+                const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+                const snap = await getDocs(q);
+                reviews = [];
+                snap.forEach(doc => reviews.push({ id: doc.id, ...doc.data() }));
+                displayReviewsSlider();
+                document.getElementById('totalReviews').innerText = reviews.length;
+            } catch(e) { console.error(e); }
+        }
+        
+        function displayReviewsSlider() {
+            const container = document.getElementById('reviewsSlider');
+            if (!container) return;
+            container.innerHTML = reviews.map(review => `
+                <div class="swiper-slide"><div class="review-card"><div class="review-stars">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div><p class="review-text">"${review.message}"</p><p class="reviewer-name">- ${review.name}</p></div></div>
+            `).join('');
+            new Swiper('.reviewsSwiper', { slidesPerView: 1, spaceBetween: 20, pagination: { el: '.swiper-pagination', clickable: true }, breakpoints: { 768: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } } });
+        }
+        
+        // Admin: Add Blog
+        document.getElementById('adminBlogForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pwd = prompt("Enter admin password:");
+            if (pwd !== "admin123") { alert("Wrong password!"); return; }
+            
+            const imageFile = document.getElementById('blogImageFile').files[0];
+            let imageUrl = null;
+            if (imageFile) imageUrl = await uploadToCloudinary(imageFile);
+            
+            const newBlog = {
+                title: document.getElementById('blogTitle').value,
+                author: document.getElementById('blogAuthor').value,
+                category: document.getElementById('blogCategory').value,
+                content: document.getElementById('blogContent').value,
+                imageUrl: imageUrl,
+                timestamp: serverTimestamp()
+            };
+            try {
+                await addDoc(collection(db, "blogs"), newBlog);
+                await loadBlogs();
+                this.reset();
+                alert('✅ Blog published successfully!');
+            } catch(e) { alert('Error: ' + e.message); }
+        });
+        
+        // Admin: Delete Blog
+        window.deleteBlog = async function(blogId) {
+            const pwd = prompt("Enter admin password to delete:");
+            if (pwd !== "admin123") { alert("Wrong password!"); return; }
+            try {
+                await deleteDoc(doc(db, "blogs", blogId));
+                await loadBlogs();
+                alert('Blog deleted!');
+            } catch(e) { alert('Error: ' + e.message); }
+        };
+        
+        // Admin: Delete Review
+        window.deleteReview = async function(reviewId) {
+            const pwd = prompt("Enter admin password to delete:");
+            if (pwd !== "admin123") { alert("Wrong password!"); return; }
+            try {
+                await deleteDoc(doc(db, "reviews", reviewId));
+                await loadReviews();
+                alert('Review deleted!');
+            } catch(e) { alert('Error: ' + e.message); }
+        };
+        
+        // Demo data
+        async function addDemoData() {
+            const demoBlogs = [
+                { title: "घर बनाने से पहले ध्यान रखने योग्य 10 बातें", author: "Vishu Civil", category: "Construction", content: "घर बनाना एक सपना होता है। सही प्लानिंग, बजट और कंस्ट्रक्शन कंपनी का चुनाव बहुत जरूरी है। पहले अच्छे से रिसर्च करें, फिर ही कोई फैसला लें। सही जगह का चुनाव, मटेरियल की क्वालिटी, और एक्सपीरियंस्ड कॉन्ट्रैक्टर का होना बहुत जरूरी है।", imageUrl: "https://images.unsplash.com/photo-1581094794329-8114a89e3f43?w=500" },
+                { title: "मकान की छत बनाने का सही तरीका", author: "Vishu Civil", category: "Construction", content: "छत बनाने में सबसे जरूरी है सही मटेरियल का इस्तेमाल। RCC छत सबसे मजबूत मानी जाती है। छत बनाते समय स्टील की मात्रा, कंक्रीट का मिक्स, और वॉटरप्रूफिंग का खास ध्यान रखना चाहिए।", imageUrl: "https://images.unsplash.com/photo-1590649880765-91b1956b8276?w=500" },
+                { title: "फर्श के लिए सही टाइल्स का चुनाव", author: "Vishu Civil", category: "Materials", content: "फर्श के लिए टाइल्स चुनते समय कई बातों का ध्यान रखना चाहिए। विट्रिफाइड टाइल्स घर के लिए सबसे अच्छी होती हैं। कमरे के हिसाब से टाइल्स का साइज तय करें।", imageUrl: "https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=500" }
+            ];
+            const demoReviews = [
+                { name: "Rajesh Kumar", rating: 5, message: "बहुत ही शानदार काम किया विशु सर ने। समय पर काम पूरा किया और गुणवत्ता भी उत्तम रही।" },
+                { name: "Suresh Gupta", rating: 5, message: "मेरे घर का नवीनीकरण कराया था। बहुत सुंदर काम किया। कीमत भी उचित रखी।" },
+                { name: "Anita Sharma", rating: 4, message: "बहुत प्रोफेशनल तरीके से काम किया। Highly recommended!" }
+            ];
+            
+            const blogsSnap = await getDocs(collection(db, "blogs"));
+            if (blogsSnap.empty) {
+                for (const blog of demoBlogs) {
+                    await addDoc(collection(db, "blogs"), { ...blog, timestamp: serverTimestamp() });
+                }
+            }
+            const reviewsSnap = await getDocs(collection(db, "reviews"));
+            if (reviewsSnap.empty) {
+                for (const review of demoReviews) {
+                    await addDoc(collection(db, "reviews"), { ...review, timestamp: serverTimestamp() });
+                }
+            }
+            await loadBlogs();
+            await loadReviews();
+        }
+        
+        // Admin UI
+        window.showAdminTab = function(tab) {
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('.admin-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`admin-${tab}`).classList.add('active');
+            if (tab === 'stats') {
+                document.getElementById('totalVisits').innerText = visitCount;
+                document.getElementById('todayVisits').innerText = localStorage.getItem('lastVisit') === new Date().toDateString() ? '1' : '0';
+            }
+            if (tab === 'reviews') {
+                document.getElementById('adminReviewList').innerHTML = reviews.map(r => `<div class="admin-list-item"><span><strong>${r.name}</strong> - ${'★'.repeat(r.rating)}<br>${r.message.substring(0, 50)}</span><button class="delete-btn" onclick="deleteReview('${r.id}')">Delete</button></div>`).join('');
+            }
+            if (tab === 'blog') {
+                document.getElementById('adminBlogList').innerHTML = blogs.map(b => `<div class="admin-list-item"><span><strong>${b.title}</strong><br>${b.author} - ${b.category}</span><button class="delete-btn" onclick="deleteBlog('${b.id}')">Delete</button></div>`).join('');
+            }
+        };
+        
+        window.toggleAdminPanel = () => {
+            const pwd = prompt("Enter admin password:");
+            if (pwd === "admin123") {
+                document.getElementById('admin-panel').classList.toggle('show');
+                document.getElementById('adminToggle').classList.add('show');
+                sessionStorage.setItem('adminMode', 'true');
+                showAdminTab('stats');
+            } else alert("Wrong password!");
+        };
+        
+        // Page Navigation
+        window.showPage = function(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-menu button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`nav-${pageId}`)?.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            history.pushState({ page: pageId }, '', `#${pageId}`);
+            if (pageId === 'blog') { displayAllBlogs(); }
+        };
+        
+        window.toggleMenu = () => document.getElementById('navMenu').classList.toggle('active');
+        document.querySelectorAll('.nav-menu button, .footer-section ul li button').forEach(btn => {
+            btn.addEventListener('click', () => document.getElementById('navMenu')?.classList.remove('active'));
+        });
+        
+        const initialPage = window.location.hash.substring(1) || 'home';
+        showPage(initialPage);
+        window.addEventListener('popstate', (e) => showPage(window.location.hash.substring(1) || 'home'));
+        
+        // Initialize
+        await addDemoData();
+        await loadBlogs();
+        await loadReviews();
+        
+        // Show admin toggle if admin mode enabled
+        if (sessionStorage.getItem('adminMode') === 'true') {
+            document.getElementById('adminToggle').classList.add('show');
+        }
+        
+        setInterval(() => {
+            if (sessionStorage.getItem('adminMode') === 'true') {
+                document.getElementById('adminToggle').classList.add('show');
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>V.C.C Admin Panel</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, orderBy, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbZj9-w4FwD4NS_KsAjQvW6rInLrZXl68",
+            authDomain: "vishu-fad04.firebaseapp.com",
+            projectId: "vishu-fad04",
+            storageBucket: "vishu-fad04.firebasestorage.app",
+            messagingSenderId: "166566628152",
+            appId: "1:166566628152:web:2655ea2232bcd916fd0fcd"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.updateDoc = updateDoc;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.orderBy = orderBy;
+        window.query = query;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%); color: #fff; overflow-x: hidden; }
+        
+        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0a0a2a, #1a1a3a); position: relative; overflow: hidden; }
+        .login-container::before { content: ''; position: absolute; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%); animation: rotate 20s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .login-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); padding: 45px 40px; border-radius: 25px; width: 100%; max-width: 420px; border: 1px solid rgba(255,215,0,0.3); box-shadow: 0 20px 40px rgba(0,0,0,0.4); position: relative; z-index: 1; animation: slideUp 0.6s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        .login-box h2 { color: #ffd700; text-align: center; margin-bottom: 30px; }
+        .login-box input { width: 100%; padding: 15px; margin: 12px 0; border-radius: 12px; border: 1px solid rgba(255,215,0,0.3); background: rgba(0,0,0,0.4); color: white; font-size: 1rem; }
+        .login-box input:focus { outline: none; border-color: #ffd700; }
+        .login-box button { width: 100%; padding: 15px; margin-top: 25px; background: linear-gradient(135deg, #ff8c00, #ffd700); border: none; border-radius: 50px; color: #1a1a2e; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s ease; animation: btnPulse 2s infinite; }
+        @keyframes btnPulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        .login-box button:hover { transform: translateY(-3px); animation: none; }
+        .error-msg { color: #ff6666; text-align: center; margin-top: 18px; display: none; }
+        
+        .dashboard { display: none; }
+        .mobile-menu-btn { position: fixed; top: 15px; left: 15px; z-index: 1001; background: linear-gradient(135deg, #ff8c00, #ffd700); border: none; padding: 12px 16px; border-radius: 12px; color: #1a1a2e; cursor: pointer; font-size: 1rem; font-weight: 600; display: none; align-items: center; gap: 8px; }
+        .sidebar { position: fixed; left: 0; top: 0; width: 280px; height: 100vh; background: linear-gradient(135deg, #0f0c29, #1a1a3a); border-right: 1px solid rgba(255,215,0,0.2); padding: 30px 20px; overflow-y: auto; z-index: 1000; transition: transform 0.3s ease; }
+        .sidebar-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,215,0,0.3); }
+        .sidebar-header img { width: 70px; height: 70px; border-radius: 50%; margin-bottom: 10px; animation: logoGlow 2s ease-in-out infinite; }
+        @keyframes logoGlow { 0% { filter: drop-shadow(0 0 2px #ffd700); } 50% { filter: drop-shadow(0 0 10px #ff8c00); } 100% { filter: drop-shadow(0 0 2px #ffd700); } }
+        .sidebar-header h2 { color: #ffd700; font-size: 1.3rem; }
+        .sidebar-menu { list-style: none; }
+        .sidebar-menu li { margin-bottom: 8px; }
+        .sidebar-menu li button { width: 100%; padding: 12px 18px; background: rgba(255,255,255,0.05); border: none; border-radius: 12px; color: white; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; text-align: left; }
+        .sidebar-menu li button:hover, .sidebar-menu li button.active { background: linear-gradient(135deg, #ff8c00, #ffd700); color: #1a1a2e; transform: translateX(5px); }
+        .logout-btn { margin-top: 30px; background: rgba(255,68,68,0.2) !important; border: 1px solid #ff6666 !important; }
+        .sidebar-close { display: none; position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 1.2rem; cursor: pointer; padding: 8px; border-radius: 8px; }
+        
+        .main-content { margin-left: 280px; padding: 30px; min-height: 100vh; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .stat-card { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; border: 1px solid rgba(255,215,0,0.2); text-align: center; transition: all 0.3s ease; }
+        .stat-card:hover { transform: translateY(-5px); border-color: #ffd700; }
+        .stat-card i { font-size: 2.5rem; color: #ffd700; margin-bottom: 15px; }
+        .stat-card h3 { font-size: 2rem; }
+        
+        .form-container, .data-table { background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); border-radius: 15px; padding: 25px; border: 1px solid rgba(255,215,0,0.2); margin-bottom: 30px; }
+        .form-container h3, .data-table h3 { color: #ffd700; margin-bottom: 20px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; color: #ccc; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); background: rgba(0,0,0,0.3); color: white; font-family: 'Poppins', sans-serif; }
+        .submit-btn { background: linear-gradient(135deg, #ff8c00, #ffd700); border: none; padding: 12px 30px; border-radius: 50px; color: #1a1a2e; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+        .submit-btn:hover { transform: translateY(-2px); }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { color: #ffd700; }
+        .delete-btn, .edit-btn { padding: 5px 12px; border-radius: 20px; border: none; cursor: pointer; margin: 0 3px; }
+        .delete-btn { background: #ff4444; color: white; }
+        .edit-btn { background: #ff8c00; color: #1a1a2e; }
+        .image-preview { margin-top: 10px; max-width: 120px; }
+        .image-preview img { width: 100%; border-radius: 10px; border: 2px solid #ffd700; }
+        
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .page-title { color: #ffd700; margin-bottom: 30px; font-size: 1.8rem; display: flex; align-items: center; gap: 12px; }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: flex !important; }
+            .sidebar { transform: translateX(-100%); width: 260px; }
+            .sidebar.active { transform: translateX(0); }
+            .sidebar-close { display: block; }
+            .main-content { margin-left: 0; padding: 70px 15px 20px 15px; }
+            .stats-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+            table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div style="text-align:center; margin-bottom:20px;">
+                <img src="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png" style="width:80px; border-radius:50%; animation:logoGlow 2s infinite;">
+            </div>
+            <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter Admin Password" onkeypress="if(event.key === 'Enter') login()">
+            <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <div id="loginError" class="error-msg">❌ Wrong Password! (Use: admin123)</div>
+        </div>
+    </div>
+
+    <div id="dashboard" class="dashboard">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i> Menu</button>
+        
+        <div class="sidebar" id="sidebar">
+            <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+            <div class="sidebar-header">
+                <img src="https://res.cloudinary.com/digyet8lg/image/upload/v1778732353/file_000000006f80720ba6cbd590820f3468_ujd4u0.png">
+                <h2><i class="fas fa-hard-hat"></i> V.C.C Admin</h2>
+                <p>Vishu Civil Contractor</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><button onclick="showSection('dashboard')" id="menu-dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</button></li>
+                <li><button onclick="showSection('blogs')" id="menu-blogs"><i class="fas fa-blog"></i> Blogs</button></li>
+                <li><button onclick="showSection('reviews')" id="menu-reviews"><i class="fas fa-star"></i> Reviews</button></li>
+                <li><button onclick="showSection('settings')" id="menu-settings"><i class="fas fa-cog"></i> Settings</button></li>
+                <li><button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div id="dashboardSection" class="section active">
+                <h1 class="page-title"><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-blog"></i><h3 id="totalBlogs">0</h3><p>Total Blogs</p></div>
+                    <div class="stat-card"><i class="fas fa-star"></i><h3 id="totalReviews">0</h3><p>Total Reviews</p></div>
+                    <div class="stat-card"><i class="fas fa-cloud-upload-alt"></i><h3 id="uploadStatus">Ready</h3><p>Cloudinary</p></div>
+                </div>
+            </div>
+
+            <div id="blogsSection" class="section">
+                <h1 class="page-title"><i class="fas fa-blog"></i> Blogs Management</h1>
+                <div class="form-container">
+                    <h3><i class="fas fa-plus-circle"></i> Add New Blog</h3>
+                    <form id="addBlogForm">
+                        <div class="form-group"><label>Blog Title *</label><input type="text" id="blogTitle" required></div>
+                        <div class="form-group"><label>Author</label><input type="text" id="blogAuthor" value="Vishu Civil"></div>
+                        <div class="form-group"><label>Category</label>
+                            <select id="blogCategory">
+                                <option value="Construction">Construction Tips</option>
+                                <option value="Design">Design Ideas</option>
+                                <option value="Materials">Material Guide</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Blog Image (JPG, PNG)</label><input type="file" id="blogImage" accept="image/*"></div>
+                        <div id="blogImagePreview" class="image-preview"></div>
+                        <div class="form-group"><label>Content *</label><textarea id="blogContent" rows="6" required></textarea></div>
+                        <button type="submit" class="submit-btn"><i class="fas fa-cloud-upload-alt"></i> Publish Blog</button>
+                    </form>
+                </div>
+                <div class="data-table">
+                    <h3><i class="fas fa-list"></i> All Blogs</h3>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>Image</th><th>Title</th><th>Author</th><th>Category</th><th>Date</th><th>Actions</th></tr></thead><tbody id="blogsList"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="reviewsSection" class="section">
+                <h1 class="page-title"><i class="fas fa-star"></i> Reviews Management</h1>
+                <div class="data-table">
+                    <h3><i class="fas fa-comments"></i> Customer Reviews</h3>
+                    <div style="overflow-x:auto;"><table><thead><tr><th>Customer</th><th>Rating</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead><tbody id="reviewsList"></tbody></table></div>
+                </div>
+            </div>
+
+            <div id="settingsSection" class="section">
+                <h1 class="page-title"><i class="fas fa-cog"></i> Settings</h1>
+                <div class="form-container">
+                    <h3><i class="fas fa-key"></i> Change Password</h3>
+                    <form id="changePasswordForm">
+                        <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required></div>
+                        <div class="form-group"><label>Confirm Password</label><input type="password" id="confirmPassword" required></div>
+                        <button type="submit" class="submit-btn">Update Password</button>
+                    </form>
+                </div>
+                <div class="form-container">
+                    <h3><i class="fas fa-info-circle"></i> System Status</h3>
+                    <p>✅ Firebase Connected</p>
+                    <p>✅ Cloudinary Ready (digyet8lg)</p>
+                    <p>✅ Images will appear on main website instantly</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_PASSWORD = "admin123";
+        let blogsData = [], reviewsData = [];
+        const CLOUDINARY_CLOUD_NAME = "digyet8lg";
+        const CLOUDINARY_UPLOAD_PRESET = "vcc_upload"; // Changed to new preset
+        
+        async function uploadToCloudinary(file) {
+            if (!file) return null;
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+            formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+            
+            try {
+                console.log("Uploading to Cloudinary...");
+                const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { 
+                    method: 'POST', 
+                    body: formData 
+                });
+                
+                if (!res.ok) {
+                    const error = await res.json();
+                    console.error("Cloudinary error:", error);
+                    throw new Error(error.error?.message || 'Upload failed');
+                }
+                
+                const data = await res.json();
+                console.log("Upload successful! URL:", data.secure_url);
+                return data.secure_url;
+            } catch(e) { 
+                console.error("Upload error:", e); 
+                alert("Upload failed: " + e.message);
+                return null; 
+            }
+        }
+        
+        window.login = function() {
+            if (document.getElementById('adminPassword').value === ADMIN_PASSWORD) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                loadAllData();
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        };
+        
+        window.logout = function() {
+            sessionStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            closeSidebar();
+        };
+        
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadAllData();
+        }
+        
+        async function loadAllData() {
+            await loadBlogs();
+            await loadReviews();
+        }
+        
+        async function loadBlogs() {
+            const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+            const snap = await getDocs(q);
+            blogsData = [];
+            snap.forEach(doc => blogsData.push({ id: doc.id, ...doc.data() }));
+            document.getElementById('totalBlogs').innerText = blogsData.length;
+            document.getElementById('blogsList').innerHTML = blogsData.map(blog => `
+                <tr>
+                    <td>${blog.imageUrl ? `<img src="${blog.imageUrl}" style="width:40px;height:40px;object-fit:cover;border-radius:5px;">` : '-'}</td>
+                    <td>${blog.title?.substring(0, 30) || '-'}</td><td>${blog.author || '-'}</td>
+                    <td>${blog.category || '-'}</td>
+                    <td>${blog.timestamp?.toDate ? new Date(blog.timestamp.toDate()).toLocaleDateString() : '-'}</td>
+                    <td><button class="edit-btn" onclick="editBlog('${blog.id}')"><i class="fas fa-edit"></i></button> <button class="delete-btn" onclick="deleteBlogItem('${blog.id}')"><i class="fas fa-trash"></i></button></td>
+                </tr>
+            `).join('');
+        }
+        
+        async function loadReviews() {
+            const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+            const snap = await getDocs(q);
+            reviewsData = [];
+            snap.forEach(doc => reviewsData.push({ id: doc.id, ...doc.data() }));
+            document.getElementById('totalReviews').innerText = reviewsData.length;
+            document.getElementById('reviewsList').innerHTML = reviewsData.map(review => `
+                <tr>
+                    <td>${review.name || '-'}</td>
+                    <td>${'★'.repeat(review.rating || 0)}${'☆'.repeat(5 - (review.rating || 0))}</td>
+                    <td>${(review.message || '').substring(0, 50)}</td>
+                    <td>${review.timestamp?.toDate ? new Date(review.timestamp.toDate()).toLocaleDateString() : '-'}</td>
+                    <td><button class="delete-btn" onclick="deleteReviewItem('${review.id}')">Delete</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        document.getElementById('addBlogForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pwd = prompt("Enter admin password:");
+            if (pwd !== ADMIN_PASSWORD) { alert("Wrong password!"); return; }
+            
+            const title = document.getElementById('blogTitle').value.trim();
+            const content = document.getElementById('blogContent').value.trim();
+            if (!title || !content) { alert("Title and content required!"); return; }
+            
+            const imageFile = document.getElementById('blogImage').files[0];
+            const submitBtn = this.querySelector('button');
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading image...';
+            submitBtn.disabled = true;
+            
+            let imageUrl = null;
+            if (imageFile) {
+                imageUrl = await uploadToCloudinary(imageFile);
+                if (!imageUrl) {
+                    alert("Image upload failed! Check console for details.");
+                    submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Publish Blog';
+                    submitBtn.disabled = false;
+                    return;
+                }
+            }
+            
+            try {
+                const blogData = {
+                    title: title,
+                    author: document.getElementById('blogAuthor').value || "Vishu Civil",
+                    category: document.getElementById('blogCategory').value,
+                    content: content,
+                    imageUrl: imageUrl,
+                    timestamp: serverTimestamp()
+                };
+                console.log("Saving to Firebase:", blogData);
+                await addDoc(collection(db, "blogs"), blogData);
+                await loadBlogs();
+                this.reset();
+                document.getElementById('blogImagePreview').innerHTML = '';
+                alert('✅ Blog published successfully! Image URL stored in Firebase.');
+            } catch(e) { 
+                console.error("Firebase error:", e);
+                alert('Error: ' + e.message); 
+            } finally { 
+                submitBtn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Publish Blog'; 
+                submitBtn.disabled = false; 
+            }
+        });
+        
+        document.getElementById('blogImage')?.addEventListener('change', function(e) {
+            const preview = document.getElementById('blogImagePreview');
+            preview.innerHTML = '';
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = ev => { const img = document.createElement('img'); img.src = ev.target.result; preview.appendChild(img); };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        window.deleteBlogItem = async function(id) {
+            if (confirm('Delete this blog?')) {
+                const pwd = prompt("Enter admin password:");
+                if (pwd !== ADMIN_PASSWORD) { alert("Wrong password!"); return; }
+                await deleteDoc(doc(db, "blogs", id));
+                await loadBlogs();
+                alert('Blog deleted!');
+            }
+        };
+        
+        window.deleteReviewItem = async function(id) {
+            if (confirm('Delete this review?')) {
+                const pwd = prompt("Enter admin password:");
+                if (pwd !== ADMIN_PASSWORD) { alert("Wrong password!"); return; }
+                await deleteDoc(doc(db, "reviews", id));
+                await loadReviews();
+                alert('Review deleted!');
+            }
+        };
+        
+        window.editBlog = async function(id) {
+            const blog = blogsData.find(b => b.id === id);
+            if (blog) {
+                const newTitle = prompt('Edit title:', blog.title);
+                if (newTitle && newTitle.trim()) {
+                    const pwd = prompt("Enter admin password:");
+                    if (pwd !== ADMIN_PASSWORD) { alert("Wrong password!"); return; }
+                    await updateDoc(doc(db, "blogs", id), { title: newTitle.trim() });
+                    await loadBlogs();
+                    alert('Blog updated!');
+                }
+            }
+        };
+        
+        window.showSection = function(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`${section}Section`).classList.add('active');
+            document.querySelectorAll('.sidebar-menu button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`menu-${section}`).classList.add('active');
+            if (window.innerWidth <= 768) closeSidebar();
+        };
+        
+        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('active');
+        window.closeSidebar = () => document.getElementById('sidebar').classList.remove('active');
+        
+        document.getElementById('changePasswordForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (document.getElementById('newPassword').value !== document.getElementById('confirmPassword').value) 
+                { alert("Passwords don't match!"); return; }
+            alert('Password changed! (Demo mode)');
+            this.reset();
+        });
+        
+        async function addDemoData() {
+            const blogsSnap = await getDocs(collection(db, "blogs"));
+            if (blogsSnap.empty) {
+                await addDoc(collection(db, "blogs"), { 
+                    title: "Welcome to VCC Blog", 
+                    author: "Vishu Civil", 
+                    category: "Construction", 
+                    content: "This is your first blog post. Share construction tips and updates here!", 
+                    imageUrl: "https://images.unsplash.com/photo-1581094794329-8114a89e3f43?w=500", 
+                    timestamp: serverTimestamp() 
+                });
+            }
+            const reviewsSnap = await getDocs(collection(db, "reviews"));
+            if (reviewsSnap.empty) {
+                await addDoc(collection(db, "reviews"), { 
+                    name: "Demo Customer", 
+                    rating: 5, 
+                    message: "Excellent work! Highly recommended.", 
+                    timestamp: serverTimestamp() 
+                });
+            }
+            await loadBlogs();
+            await loadReviews();
+        }
+        
+        addDemoData();
+        
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                if (!sidebar.contains(event.target) && !menuBtn?.contains(event.target)) closeSidebar();
+            }
+        });
+    </script>
+</body>
+</html>

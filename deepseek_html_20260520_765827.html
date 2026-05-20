@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V.C.C Admin Panel - Vishu Civil Contractor Dashboard</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, orderBy, query, limit, serverTimestamp, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyAbZj9-w4FwD4NS_KsAjQvW6rInLrZXl68",
+            authDomain: "vishu-fad04.firebaseapp.com",
+            projectId: "vishu-fad04",
+            storageBucket: "vishu-fad04.firebasestorage.app",
+            messagingSenderId: "166566628152",
+            appId: "1:166566628152:web:2655ea2232bcd916fd0fcd"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        
+        window.db = db;
+        window.storage = storage;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.getDoc = getDoc;
+        window.updateDoc = updateDoc;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.orderBy = orderBy;
+        window.query = query;
+        window.limit = limit;
+        window.where = where;
+        window.onSnapshot = onSnapshot;
+        window.ref = ref;
+        window.uploadBytes = uploadBytes;
+        window.getDownloadURL = getDownloadURL;
+        window.deleteObject = deleteObject;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0a0a2a 0%, #1a1a3a 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a2a, #1a1a3a);
+        }
+        .login-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255,215,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .login-box h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        .login-box button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            border: none;
+            border-radius: 10px;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .login-box button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255,140,0,0.5);
+        }
+        .error-msg {
+            color: #ff4444;
+            text-align: center;
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: none;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #1a1a3a);
+            border-right: 1px solid rgba(255,215,0,0.2);
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+        }
+        .sidebar-header h2 {
+            color: #ffd700;
+            font-size: 1.5rem;
+        }
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: #aaa;
+            margin-top: 5px;
+        }
+        .sidebar-menu {
+            list-style: none;
+        }
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+        .sidebar-menu li button {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        .sidebar-menu li button:hover,
+        .sidebar-menu li button.active {
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            color: #1a1a2e;
+            transform: translateX(5px);
+        }
+        .main-content {
+            margin-left: 280px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #ffd700;
+        }
+        .stat-card i {
+            font-size: 2.5rem;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .stat-card p {
+            color: #aaa;
+        }
+        
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .chart-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        .chart-card h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-height: 300px;
+        }
+        
+        /* Tables */
+        .data-table {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,215,0,0.2);
+        }
+        .data-table h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            color: #ffd700;
+        }
+        .delete-btn {
+            background: #ff4444;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .delete-btn:hover {
+            background: #cc0000;
+            transform: scale(1.05);
+        }
+        .edit-btn {
+            background: #ff8c00;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        
+        /* Forms */
+        .form-container {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255,215,0,0.2);
+            margin-bottom: 30px;
+        }
+        .form-container h3 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #ff8c00, #ffd700);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,140,0,0.4);
+        }
+        
+        /* Image Preview */
+        .image-preview {
+            margin-top: 10px;
+            max-width: 200px;
+        }
+        .image-preview img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1000;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 1001;
+                background: #ff8c00;
+                border: none;
+                padding: 10px;
+                border-radius: 10px;
+                color: white;
+                cursor: pointer;
+            }
+        }
+        
+        .section {
+            display: none;
+        }
+        .section.active {
+            display: block;
+        }
+        
+        .logout-btn {
+            margin-top: 30px;
+            background: rgba(255,68,68,0.2);
+            border: 1px solid #ff4444;
+        }
+        .logout-btn:hover {
+            background: #ff4444;
+            color: white;
+        }
+        
+        .blog-image-preview, .review-image-preview {
+            max-width: 100px;
+            margin-top: 10px;
+        }
+        .blog-image-preview img, .review-image-preview img {
+            width: 100%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
+            <input type="password" id="adminPassword" placeholder="Enter Admin Password">
+            <button onclick="login()"><i class="fas fa-sign-in-alt"></i> Login</button>
+            <div id="loginError" class="error-msg">Wrong Password! Please try again.</div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="dashboard">
+        <button class="menu-toggle" onclick="toggleSidebar()" style="display: none;"><i class="fas fa-bars"></i></button>
+        
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-hard-hat"></i> V.C.C Admin</h2>
+                <p>Vishu Civil Contractor</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li><button onclick="showSection('dashboard')" id="menu-dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</button></li>
+                <li><button onclick="showSection('blogs')" id="menu-blogs"><i class="fas fa-blog"></i> Blogs Management</button></li>
+                <li><button onclick="showSection('reviews')" id="menu-reviews"><i class="fas fa-star"></i> Reviews Management</button></li>
+                <li><button onclick="showSection('analytics')" id="menu-analytics"><i class="fas fa-chart-bar"></i> Analytics</button></li>
+                <li><button onclick="showSection('settings')" id="menu-settings"><i class="fas fa-cog"></i> Settings</button></li>
+                <li><button onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="section active">
+                <h1 style="color: #ffd700; margin-bottom: 30px;"><i class="fas fa-tachometer-alt"></i> Dashboard</h1>
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-blog"></i><h3 id="totalBlogs">0</h3><p>Total Blogs</p></div>
+                    <div class="stat-card"><i class="fas fa-star"></i><h3 id="totalReviews">0</h3><p>Total Reviews</p></div>
+                    <div class="stat-card"><i class="fas fa-eye"></i><h3 id="avgRating">0</h3><p>Average Rating</p></div>
+                    <div class="stat-card"><i class="fas fa-calendar"></i><h3 id="totalVisits">0</h3><p>Total Visits</p></div>
+                </div>
+                <div class="charts-grid">
+                    <div class="chart-card"><h3><i class="fas fa-chart-line"></i> Monthly Visitors</h3><canvas id="visitorChart"></canvas></div>
+                    <div class="chart-card"><h3><i class="fas fa-chart-pie"></i> Blog Categories</h3><canvas id="categoryChart"></canvas></div>
+                </div>
+                <div class="data-table">
+                    <h3><i class="fas fa-clock"></i> Recent Activities</h3>
+                    <div id="recentActivities"></div>
+                </div>
+            </div>
+
+            <!-- Blogs Management Section -->
+            <div id="blogsSection" class="section">
+                <h1 style="color: #ffd700; margin-bottom: 30px;"><i class="fas fa-blog"></i> Blogs Management</h1>
+                
+                <!-- Add Blog Form -->
+                <div class="form-container">
+                    <h3><i class="fas fa-plus-circle"></i> Add New Blog</h3>
+                    <form id="addBlogForm">
+                        <div class="form-group"><label>Blog Title</label><input type="text" id="blogTitle" required></div>
+                        <div class="form-group"><label>Author Name</label><input type="text" id="blogAuthor" value="Vishu Civil" required></div>
+                        <div class="form-group"><label>Category</label>
+                            <select id="blogCategory">
+                                <option value="Construction">Construction Tips</option>
+                                <option value="Design">Design Ideas</option>
+                                <option value="Materials">Material Guide</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Blog Image</label><input type="file" id="blogImage" accept="image/*"></div>
+                        <div class="blog-image-preview" id="blogImagePreview"></div>
+                        <div class="form-group"><label>Blog Content</label><textarea id="blogContent" rows="6" required></textarea></div>
+                        <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Publish Blog</button>
+                    </form>
+                </div>
+                
+                <!-- Blogs List -->
+                <div class="data-table">
+                    <h3><i class="fas fa-list"></i> All Blogs</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="blogsTable">
+                            <thead><tr><th>Image</th><th>Title</th><th>Author</th><th>Category</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody id="blogsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Management Section -->
+            <div id="reviewsSection" class="section">
+                <h1 style="color: #ffd700; margin-bottom: 30px;"><i class="fas fa-star"></i> Reviews Management</h1>
+                <div class="data-table">
+                    <h3><i class="fas fa-comments"></i> Customer Reviews</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="reviewsTable">
+                            <thead><tr><th>Customer</th><th>Rating</th><th>Review</th><th>Date</th><th>Actions</th></tr></thead>
+                            <tbody id="reviewsList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analyticsSection" class="section">
+                <h1 style="color: #ffd700; margin-bottom: 30px;"><i class="fas fa-chart-bar"></i> Advanced Analytics</h1>
+                <div class="stats-grid">
+                    <div class="stat-card"><i class="fas fa-calendar-week"></i><h3 id="weeklyViews">0</h3><p>This Week Views</p></div>
+                    <div class="stat-card"><i class="fas fa-calendar-month"></i><h3 id="monthlyViews">0</h3><p>This Month Views</p></div>
+                    <div class="stat-card"><i class="fas fa-percent"></i><h3 id="bounceRate">0%</h3><p>Engagement Rate</p></div>
+                </div>
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-line"></i> Weekly Traffic Report</h3>
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settingsSection" class="section">
+                <h1 style="color: #ffd700; margin-bottom: 30px;"><i class="fas fa-cog"></i> Settings</h1>
+                <div class="form-container">
+                    <h3><i class="fas fa-key"></i> Change Admin Password</h3>
+                    <form id="changePasswordForm">
+                        <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
+                        <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required></div>
+                        <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirmPassword" required></div>
+                        <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Update Password</button>
+                    </form>
+                </div>
+                <div class="form-container">
+                    <h3><i class="fas fa-database"></i> Data Management</h3>
+                    <button class="submit-btn" onclick="exportData()"><i class="fas fa-download"></i> Export All Data (JSON)</button>
+                    <button class="submit-btn" onclick="clearAllData()" style="background: #ff4444; margin-top: 10px;"><i class="fas fa-trash"></i> Clear All Demo Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Admin credentials
+        const ADMIN_PASSWORD = "admin123";
+        let blogsData = [];
+        let reviewsData = [];
+        let visitorChart, categoryChart, weeklyChart;
+        
+        // Login function
+        window.login = function() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === ADMIN_PASSWORD) {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                loadAllData();
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        };
+        
+        window.logout = function() {
+            sessionStorage.removeItem('adminLoggedIn');
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        };
+        
+        // Check if already logged in
+        if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            loadAllData();
+        }
+        
+        // Load all data from Firebase
+        async function loadAllData() {
+            await loadBlogs();
+            await loadReviews();
+            updateStats();
+            updateCharts();
+            updateRecentActivities();
+        }
+        
+        // Load Blogs
+        async function loadBlogs() {
+            try {
+                const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+                const snap = await getDocs(q);
+                blogsData = [];
+                snap.forEach(doc => blogsData.push({ id: doc.id, ...doc.data() }));
+                displayBlogsTable();
+                document.getElementById('totalBlogs').innerText = blogsData.length;
+            } catch(e) { console.error(e); }
+        }
+        
+        function displayBlogsTable() {
+            const tbody = document.getElementById('blogsList');
+            tbody.innerHTML = blogsData.map(blog => `
+                <tr>
+                    <td>${blog.imageUrl ? `<img src="${blog.imageUrl}" style="width:50px; height:50px; object-fit:cover; border-radius:8px;">` : '-'}</td>
+                    <td>${blog.title?.substring(0, 30) || '-'}</td>
+                    <td>${blog.author || '-'}</td>
+                    <td>${blog.category || '-'}</td>
+                    <td>${blog.timestamp?.toDate ? new Date(blog.timestamp.toDate()).toLocaleDateString() : '-'}</td>
+                    <td><button class="edit-btn" onclick="editBlog('${blog.id}')"><i class="fas fa-edit"></i></button><button class="delete-btn" onclick="deleteBlogItem('${blog.id}')"><i class="fas fa-trash"></i></button></td>
+                </tr>
+            `).join('');
+        }
+        
+        // Load Reviews
+        async function loadReviews() {
+            try {
+                const q = query(collection(db, "reviews"), orderBy("timestamp", "desc"));
+                const snap = await getDocs(q);
+                reviewsData = [];
+                snap.forEach(doc => reviewsData.push({ id: doc.id, ...doc.data() }));
+                displayReviewsTable();
+                document.getElementById('totalReviews').innerText = reviewsData.length;
+                const avg = reviewsData.reduce((sum, r) => sum + (r.rating || 0), 0) / (reviewsData.length || 1);
+                document.getElementById('avgRating').innerText = avg.toFixed(1);
+            } catch(e) { console.error(e); }
+        }
+        
+        function displayReviewsTable() {
+            const tbody = document.getElementById('reviewsList');
+            tbody.innerHTML = reviewsData.map(review => `
+                <tr>
+                    <td>${review.name || '-'}</td>
+                    <td>${'★'.repeat(review.rating || 0)}${'☆'.repeat(5 - (review.rating || 0))}</td>
+                    <td>${review.message?.substring(0, 50) || '-'}</td>
+                    <td>${review.timestamp?.toDate ? new Date(review.timestamp.toDate()).toLocaleDateString() : '-'}</td>
+                    <td><button class="delete-btn" onclick="deleteReviewItem('${review.id}')"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>
+            `).join('');
+        }
+        
+        // Upload image to Cloudinary
+        async function uploadToCloudinary(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'ml_default');
+            try {
+                const res = await fetch('https://api.cloudinary.com/v1_1/digyet8lg/image/upload', { method: 'POST', body: formData });
+                const data = await res.json();
+                return data.secure_url;
+            } catch(e) { console.error(e); return null; }
+        }
+        
+        // Add Blog
+        document.getElementById('addBlogForm')?.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const imageFile = document.getElementById('blogImage').files[0];
+            let imageUrl = null;
+            if (imageFile) imageUrl = await uploadToCloudinary(imageFile);
+            
+            const newBlog = {
+                title: document.getElementById('blogTitle').value,
+                author: document.getElementById('blogAuthor').value,
+                category: document.getElementById('blogCategory').value,
+                content: document.getElementById('blogContent').value,
+                imageUrl: imageUrl,
+                timestamp: serverTimestamp()
+            };
+            try {
+                await addDoc(collection(db, "blogs"), newBlog);
+                await loadBlogs();
+                this.reset();
+                document.getElementById('blogImagePreview').innerHTML = '';
+                alert('✅ Blog published successfully!');
+            } catch(e) { alert('Error: ' + e.message); }
+        });
+        
+        // Image preview
+        document.getElementById('blogImage')?.addEventListener('change', function(e) {
+            const preview = document.getElementById('blogImagePreview');
+            preview.innerHTML = '';
+            if (e.target.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const img = document.createElement('img');
+                    img.src = ev.target.result;
+                    img.style.width = '100px';
+                    img.style.borderRadius = '8px';
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+        
+        // Delete Blog
+        window.deleteBlogItem = async function(blogId) {
+            if (confirm('Are you sure you want to delete this blog?')) {
+                try {
+                    await deleteDoc(doc(db, "blogs", blogId));
+                    await loadBlogs();
+                    alert('Blog deleted successfully!');
+                } catch(e) { alert('Error: ' + e.message); }
+            }
+        };
+        
+        // Delete Review
+        window.deleteReviewItem = async function(reviewId) {
+            if (confirm('Are you sure you want to delete this review?')) {
+                try {
+                    await deleteDoc(doc(db, "reviews", reviewId));
+                    await loadReviews();
+                    alert('Review deleted successfully!');
+                } catch(e) { alert('Error: ' + e.message); }
+            }
+        };
+        
+        // Edit Blog
+        window.editBlog = async function(blogId) {
+            const blog = blogsData.find(b => b.id === blogId);
+            if (blog) {
+                const newTitle = prompt('Enter new title:', blog.title);
+                if (newTitle) {
+                    try {
+                        await updateDoc(doc(db, "blogs", blogId), { title: newTitle });
+                        await loadBlogs();
+                        alert('Blog updated!');
+                    } catch(e) { alert('Error: ' + e.message); }
+                }
+            }
+        };
+        
+        // Update Stats
+        function updateStats() {
+            const visits = localStorage.getItem('totalVisits') || '0';
+            document.getElementById('totalVisits').innerText = visits;
+            
+            // Weekly views
+            const weekly = localStorage.getItem('weeklyViews') || '245';
+            document.getElementById('weeklyViews').innerText = weekly;
+            document.getElementById('monthlyViews').innerText = Math.floor(parseInt(weekly) * 4.2);
+            document.getElementById('bounceRate').innerText = '68%';
+        }
+        
+        // Update Charts
+        function updateCharts() {
+            const ctx1 = document.getElementById('visitorChart')?.getContext('2d');
+            const ctx2 = document.getElementById('categoryChart')?.getContext('2d');
+            const ctx3 = document.getElementById('weeklyChart')?.getContext('2d');
+            
+            if (ctx1) {
+                if (visitorChart) visitorChart.destroy();
+                visitorChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'], datasets: [{ label: 'Visitors', data: [120, 150, 180, 220, 280, 350], borderColor: '#ffd700', backgroundColor: 'rgba(255,215,0,0.1)', fill: true }] },
+                    options: { responsive: true, maintainAspectRatio: true }
+                });
+            }
+            
+            if (ctx2) {
+                const construction = blogsData.filter(b => b.category === 'Construction').length;
+                const design = blogsData.filter(b => b.category === 'Design').length;
+                const materials = blogsData.filter(b => b.category === 'Materials').length;
+                if (categoryChart) categoryChart.destroy();
+                categoryChart = new Chart(ctx2, {
+                    type: 'pie',
+                    data: { labels: ['Construction', 'Design', 'Materials'], datasets: [{ data: [construction, design, materials], backgroundColor: ['#ff8c00', '#ffd700', '#ffaa00'] }] }
+                });
+            }
+            
+            if (ctx3) {
+                if (weeklyChart) weeklyChart.destroy();
+                weeklyChart = new Chart(ctx3, {
+                    type: 'bar',
+                    data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Page Views', data: [45, 52, 48, 61, 73, 89, 76], backgroundColor: '#ffd700' }] }
+                });
+            }
+        }
+        
+        // Recent Activities
+        function updateRecentActivities() {
+            const container = document.getElementById('recentActivities');
+            const activities = [
+                { action: 'New blog published', time: '2 hours ago', icon: 'fa-blog' },
+                { action: '5-star review received', time: '5 hours ago', icon: 'fa-star' },
+                { action: 'Website visit: 45 visitors', time: 'Today', icon: 'fa-eye' },
+                { action: 'New enquiry from contact form', time: 'Yesterday', icon: 'fa-envelope' }
+            ];
+            container.innerHTML = activities.map(a => `
+                <div style="padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px;">
+                    <i class="fas ${a.icon}" style="color: #ffd700;"></i>
+                    <div><strong>${a.action}</strong><br><small style="color: #aaa;">${a.time}</small></div>
+                </div>
+            `).join('');
+        }
+        
+        // Change Password
+        document.getElementById('changePasswordForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (current !== ADMIN_PASSWORD) {
+                alert('Current password is incorrect!');
+                return;
+            }
+            if (newPass !== confirm) {
+                alert('New passwords do not match!');
+                return;
+            }
+            if (newPass.length < 6) {
+                alert('Password must be at least 6 characters!');
+                return;
+            }
+            alert('Password changed successfully! (Demo: In production, this would update the database)');
+            this.reset();
+        });
+        
+        // Export Data
+        window.exportData = function() {
+            const data = { blogs: blogsData, reviews: reviewsData, exportDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `vcc_data_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
+        
+        // Clear Demo Data
+        window.clearAllData = async function() {
+            if (confirm('⚠️ WARNING: This will delete ALL blogs and reviews! Are you sure?')) {
+                for (const blog of blogsData) {
+                    await deleteDoc(doc(db, "blogs", blog.id));
+                }
+                for (const review of reviewsData) {
+                    await deleteDoc(doc(db, "reviews", review.id));
+                }
+                await loadBlogs();
+                await loadReviews();
+                alert('All demo data cleared successfully!');
+            }
+        };
+        
+        // Section navigation
+        window.showSection = function(section) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(`${section}Section`).classList.add('active');
+            document.querySelectorAll('.sidebar-menu button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`menu-${section}`).classList.add('active');
+            if (section === 'analytics') updateCharts();
+        };
+        
+        window.toggleSidebar = function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        };
+        
+        // Responsive sidebar
+        if (window.innerWidth <= 768) {
+            document.querySelector('.menu-toggle').style.display = 'block';
+        }
+        
+        // Auto refresh data every 30 seconds
+        setInterval(() => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                loadBlogs();
+                loadReviews();
+                updateStats();
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
